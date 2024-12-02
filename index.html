@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Operator</title>
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.css"
+    />
+    <script>
+      let productId = 1;
+      let intervalId;
+
+      playBtn = () => {
+        intervalId = setInterval(() => {
+          nextBtn();
+        }, 2000);
+      };
+      pauseBtn = () => {
+        clearInterval(intervalId);
+      };
+      loadProduct = (Id) => {
+        fetch(`https://fakestoreapi.com/products/${Id}`)
+          .then((resposne) => {
+            return resposne.json();
+          })
+          .then((item) => {
+            document.querySelector("img").src = item.image;
+            document.querySelector("h5").innerHTML = item.title;
+          });
+      };
+      prevBtn = () => {
+        productId--;
+        loadProduct(productId);
+      };
+      nextBtn = () => {
+        loadProduct(++productId);
+      };
+      bodyLoad = () => {
+        loadProduct(1);
+      };
+    </script>
+  </head>
+  <body onload="bodyLoad()">
+    <div class="card m-2 text-center">
+      <div class="card-header">
+        <button onclick="playBtn()" class="btn btn-primary">Play</button>
+        <button onclick="pauseBtn()" class="btn btn-primary">Pause</button>
+      </div>
+      <div class="card-body">
+        <img
+          style="height: 400px; width: 400px"
+          class="mb-2 card-img-top"
+          alt="..."
+        />
+        <h5 class="card-title"></h5>
+      </div>
+      <div class="card-footer">
+        <button onclick="prevBtn()" class="btn btn-primary">Prev</button>
+        <button onclick="nextBtn()" class="btn btn-primary">Next</button>
+      </div>
+    </div>
+  </body>
+</html>
